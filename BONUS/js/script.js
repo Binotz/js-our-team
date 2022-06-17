@@ -56,19 +56,23 @@ const addMemberButton = document.getElementById('addMemberButton');
 const teamContainer = document.querySelector('.team-container');
 addMemberButton.addEventListener('click', addMember);
 
-//creo e popolo le cards
-for(let i = 0; i < members.length; i++){
-    const currentMember = members[i];
-    createMember(currentMember);
-}
-
+memberGeneration();
 
 //Functions
+//Genero tutto i membri, partendo dall'array base (più eventuali aggiunte tramite il button)
+function memberGeneration(){
+    teamContainer.innerHTML = '';
+    for(let i = 0; i < members.length; i++){
+        const currentMember = members[i];
+        createMember(currentMember);
+    }
+}
+//Aggiungo un utente inserito dall'utente
 function addMember(){
+    //recupero i dati inseriti dall'utente e li metto in un nuovo oggetto
     const memberName = memberNameDOM.value;
     const memberRole = memberRoleDOM.value;
     const memberImg = memberImgDOM.value;
-    console.log(memberName, memberRole, memberImg);
     const newMember = {
         name: memberName,
         role: memberRole,
@@ -77,13 +81,17 @@ function addMember(){
             alt: memberName
         }
     }
-    createMember(newMember)
+    //inserisco l'utente nell'array
+    members.push(newMember);
+    //rigenero la griglia sul DOM con tutti gli utenti
+    memberGeneration();
 }
 
+//creo ogni singola card con il member passato a parametro
 function createMember(member){
     //controllo se l'immagine contiene l'estensione
     let imgName = member.img.name;
-    console.log(imgName)
+    //se non c'è, aggiungo il .jpg
     if (!imgName.includes('.jpg')){
         imgName = member.img.name.concat('.jpg');
     }
